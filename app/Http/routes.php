@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['prefix' => 'api'], function () {
+
+    post('register', 'UserController@register');
+    post('login', 'UserController@login');
+
+    Route::group(['middleware' => 'auth'], function () {
+        get('logout', 'UserController@logout');
+    });
+
+});

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\API;
 
-use App\Http\Requests\Request;
+use App\Http\Requests\APIRequest;
 
-class RegisterRequest extends Request
+class LoginRequest extends APIRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +24,8 @@ class RegisterRequest extends Request
     public function rules()
     {
         return [
-            'first_name' => 'required|max:255|min:5',
-            'username'   => 'required|max:20|min:3|unique:users',
-            'email'      => 'required|email|max:255|unique:users',
-            'password'   => 'required|confirmed|min:6',
+            'username' => 'required',
+            'password' => 'required',
         ];
     }
 }

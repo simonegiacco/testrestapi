@@ -15,7 +15,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => 'api'], function () {
+Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
 
     post('register', 'UserController@register');
     post('login', 'UserController@login');

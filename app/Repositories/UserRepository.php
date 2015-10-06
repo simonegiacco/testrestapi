@@ -10,4 +10,24 @@ class UserRepository extends Repository
     {
         $this->model = $user;
     }
+
+    public function store(array $attributes = [])
+    {
+        $user = parent::store($attributes);
+
+        auth()->login($user);
+
+        return $user;
+    }
+
+    public function login($credentials, $remember = false)
+    {
+        return auth()->attempt($credentials, $remember);
+    }
+
+    public function logout()
+    {
+        auth()->logout();
+    }
+
 }

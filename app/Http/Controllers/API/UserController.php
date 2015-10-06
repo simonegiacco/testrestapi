@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
+use App\Http\Requests\API\LoginRequest;
+use App\Http\Requests\API\RegisterRequest;
 use App\Repositories\UserRepository;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -19,11 +21,9 @@ class UserController extends Controller
     /**
      * Register new user
      */
-    public function register(Requests\RegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
         $user = $this->userRepository->store($request->all());
-
-        auth()->login($user);
 
         return success($user, 'User registered successfully.');
     }
@@ -31,11 +31,11 @@ class UserController extends Controller
     /*
      * Login user
      */
-    public function login(Requests\LoginRequest $request)
+    public function login(LoginRequest $request)
     {
         $credentials = $request->only(['username', 'password']);
 
-        if (auth()->attempt($credentials, $request->has('remember'))) {
+        if ($this->userRepository->login($credentials, $request->has('remember'))) {
             return success(auth()->user(), 'User logged in successfully.');
         }
 
@@ -47,7 +47,7 @@ class UserController extends Controller
      */
     public function logout()
     {
-        auth()->logout();
+        $this->userRepository->logout();
 
         return success(null, 'User logged out successfully.');
     }

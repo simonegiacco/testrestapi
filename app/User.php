@@ -11,8 +11,8 @@ use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 
 class User extends Model implements AuthenticatableContract,
-                                    AuthorizableContract,
-                                    CanResetPasswordContract
+    AuthorizableContract,
+    CanResetPasswordContract
 {
     use Authenticatable, Authorizable, CanResetPassword;
 
@@ -36,7 +36,7 @@ class User extends Model implements AuthenticatableContract,
         'status',
         'is_active',
         'email',
-        'password'
+        'password',
     ];
 
     /**
@@ -58,4 +58,13 @@ class User extends Model implements AuthenticatableContract,
         return parent::create($attributes);
     }
 
+    public function getNameAttribute()
+    {
+        return $this->getFullName();
+    }
+
+    private function getFullName()
+    {
+        return ($this->last_name) ? $this->first_name . ' ' . $this->last_name : $this->first_name;
+    }
 }

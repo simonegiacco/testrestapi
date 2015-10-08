@@ -22,7 +22,18 @@ class UserRepository extends Repository
 
     public function login($credentials, $remember = false)
     {
-        return auth()->attempt($credentials, $remember);
+        $credentialsWithEmail = [
+            'email' => $credentials['username'],
+            'password' => $credentials['password'],
+        ];
+
+        if(auth()->attempt($credentials, $remember)) {
+            return true;
+        } elseif(auth()->attempt($credentialsWithEmail, $remember)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function logout()
